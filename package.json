@@ -1,0 +1,30 @@
+{
+  "name": "programa-sokets",
+  "version": "1.0.0",
+  "description": "Es un programa para conectar 2 computadoras, involucrando temas de sokets, cliente y servidor",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon /src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juan-Susatama/Programa-con-sokets.git"
+  },
+  "keywords": [
+    "sokets"
+  ],
+  "author": "Juan Esteban Susatama Valderrama",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juan-Susatama/Programa-con-sokets/issues"
+  },
+  "homepage": "https://github.com/Juan-Susatama/Programa-con-sokets#readme",
+  "dependencies": {
+    "express": "4.19.2",
+    "morgan": "1.10.0",
+    "socket.io": "^4.7.5",
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.4.0"
+  }
+}

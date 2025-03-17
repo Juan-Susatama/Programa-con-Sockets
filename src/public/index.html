@@ -1,0 +1,99 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocketUD</title>
+    <link href="Main.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width = device-width, initial-scale=1.0">
+    <script type="module">
+        import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js'
+
+        const socket = io()
+        const form = document.getElementById('form')
+        const input = document.getElementById('input')
+        const messages = document.getElementById('messages')
+
+        document.querySelector("[data-btn-send]").addEventListener("click", ()=> {
+             let message = document.querySelector("[data-message]").value;
+        });
+        
+        socket.on("socketData", (data) => {
+         document.querySelector("[data-ip]").innerHTML = data.ip;
+         document.querySelector("[data-status]").classList.remove("text-danger");
+         document.querySelector("[data-status]").classList.add("text-success");
+         document.querySelector("[data-status-text]").innerHTML = "Conectado";
+         document.querySelector("[data-rol]").innerHTML = data.rol;
+         document.querySelector("[data-port]").innerHTML = data.port;
+        });
+
+        socket.on("messageServer", (data) => {
+            const item = `<li>${data}</li>`
+            console.log('Mensaje recibido');
+            const pMensaje = document.createElement("li");
+            pMensaje.innerHTML = data;
+            pMensaje.classList.add("list-group-item");
+            pMensaje.classList.add("list-group-item-dark");
+            pMensaje.classList.add("text-break");
+            pMensaje.classList.add("mb-1");
+            document.querySelector("[data-register-message]").appendChild(pMensaje);
+            document
+               .querySelector("[data-btn-reset-register-message]")
+			   .removeAttribute("hidden");
+            messages.insertAdjacentHTML('beforeend', item)
+        });
+
+        document.querySelector("[data-btn-send]").addEventListener('click',()=>{
+            const input = document.querySelector("[data-message]");
+            const message = input.value;
+            if(message != ""){socket.emit("message",{message});}
+            else{return;}
+            const eMensaje = document.createElement("li");
+            eMensaje.innerHTML =  `Tu = ${message}`;
+            eMensaje.classList.add("list-group-item");
+            eMensaje.classList.add("list-group-item-dark");
+            eMensaje.classList.add("text-break");
+            eMensaje.classList.add("mb-1");
+            document.querySelector("[data-register-send]").appendChild(eMensaje);
+            input.value = "";
+        });
+
+    </script>
+
+</head>
+<body class="container"> 
+    <main>
+
+        <header>
+            <nav class="row w-100 p-3">
+                <ul class="list-group list-group-horizontal-sm">
+                    <li data-status class="list-group-item list-group-item-dark text-danger text-break"><i data-status-text class="bi bi-ethernet">Desconectado</i></li>
+                    <li class="list-group-item list-group-item-dark text-break"><i data-rol class="bi bi-person-fill"></i></li>
+                    <li class="list-group-item list-group-item-dark text-break"><i data-ip class="bi bi-pc-display"></i></li>
+                    <li class="list-group-item list-group-item-dark text-break"><i data-port class="bi bi-hdd-stack-fill"></i></li>
+                </ul>
+            </nav>
+        </header>
+
+      <section id="chat" class="card">
+        <div>
+         <ul id="messages" data-register-send class="list-group list-group-flush rounded"></ul>
+        </div>
+        <form id="form" class="title">
+            <div class="Message">
+                <input data-message id="input" placeholder="Mensaje..." class="MsgInput" type="text" name="message" autocomplete="off">
+                <button type="button" data-btn-send class="btn">
+                    <i>Enviar</i>
+                </button>
+            </div>           
+        </form>
+      </section>
+      <div class="buzon">
+        <h2  class="form-floating">Mensajes recibidos</h2>
+        <div>
+            <ul data-register-message class="a list-group list-group-flush rounded"></ul>
+        </div>
+       </div>
+    </main>
+</body> 
+</html> 
